@@ -221,21 +221,25 @@ Extra dependencies
 ~~~~~~~~~~~~~~~~~~
 
 Because Odoo runs on Python 2, you need to check which version of pip
-you need to use.
+you need to use (look at the path in the output below).
 
 ``# pip --version``
 
-If it returns something like::
-
-  pip 1.5.6 from /usr/local/lib/python3.3/dist-packages/pip-1.5.6-py3.3.egg (python 3.3)
-
-You need to try pip2 instead.
+If pip is not found, you need to install the package first (called ``python-pip`` on Debian)
 
 If it returns something like::
 
-  pip 1.4.1 from /usr/lib/python2.7/dist-packages (python 2.7)
+  pip 1.5.6 from /usr/local/lib/python3.3/dist-packages/pip-1.5.6-py3.3.egg (*python 3.3*)
+
+You need to explicitly run the Python2 version of pip, usually called pip2.
+
+If it returns something like::
+
+  pip 1.4.1 from /usr/lib/python2.7/dist-packages (*python 2.7*)
 
 You can use pip.
+
+If you don't have the Python developer package installed, you will need to do that now, as the evdev module below requires it. Usually (e.g., on Debian), the package is called python-dev.
 
 The driver modules requires the installation of new python modules:
 
@@ -244,6 +248,8 @@ The driver modules requires the installation of new python modules:
 ``# pip install pyusb==1.0.0b1``
 
 ``# pip install qrcode``
+
+``# pip install evdev`` (required for the scanner module)
 
 Access Rights
 ~~~~~~~~~~~~~
@@ -266,7 +272,9 @@ following content::
     SUBSYSTEM=="usb", GROUP="usbusers", MODE="0660"
     SUBSYSTEMS=="usb", GROUP="usbusers", MODE="0660"
 
-Then you need to reboot your machine.
+Then you need to reload the udev rules (or reboot the machine) by issuing
+
+``# devadm control -R``
 
 Start the local Odoo instance
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
